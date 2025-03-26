@@ -84,21 +84,30 @@ export async function handleToolCall(name: string, args: any): Promise<CallToolR
       case "get_featured_coins":
          url = PUMP_FUN_API_URL+'/coins/for-you';
          return {
-            content: (await fetchPumpFunData(url, args)),
+            content: [{
+              type: "text",
+              text: JSON.stringify((await fetchPumpFunData(url, args)))
+            }],
             isError: false,
         };
-        case "get_coins":
-            url = PUMP_FUN_API_URL+'/coins';
-            return {
-                content: (await fetchPumpFunData(url, args)),
-                isError: false,
-            };
-        case "get_coin_info":
-            url = PUMP_FUN_API_URL+'/coins/'+args.mintId;
-            return {
-                content: (await fetchPumpFunData(url, {})),
-                isError: false,
-            };
+      case "get_coins":
+          url = PUMP_FUN_API_URL+'/coins';
+          return {
+            content: [{
+              type: "text",
+              text: JSON.stringify((await fetchPumpFunData(url, args)))
+            }],
+            isError: false,
+          };
+      case "get_coin_info":
+          url = PUMP_FUN_API_URL+'/coins/'+args.mintId;
+          return {
+            content: [{
+              type: "text",
+              text: JSON.stringify((await fetchPumpFunData(url, {})))
+            }],
+            isError: false,
+          };
       default:
         return {
           content: [{
@@ -140,13 +149,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     tools: TOOLS,
   }));
   
-  server.setRequestHandler(CallToolRequestSchema, async (request) =>
-    handleToolCall(request.params.name, request.params.arguments ?? {})
-  );
-  
-  async function runServer() {
-    const transport = new StdioServerTransport();
-    await server.connect(transport);
-  }
-  
-  runServer().catch(console.error);
+server.setRequestHandler(CallToolRequestSchema, async (request) =>
+  handleToolCall(request.params.name, request.params.arguments ?? {})
+);
+
+async function runServer() {
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
+}
+
+runServer().catch(console.error);
