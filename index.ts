@@ -32,7 +32,7 @@ const TOOLS: Tool[] = [
             properties: {
                 offset: { type: "number", description: "The offset to start from (default: 0)", default: 0 },
                 limit: { type: "number", description: "The number of coins to return (default: 24)", default: 24 },
-                sort: { type: "string", description: "The field to sort by (market_cap, last_trade_timestamp, created_timestamp, last_reply)", default: "marketcap" },
+                sort: { type: "string", description: "The field to sort by (market_cap, last_trade_timestamp, created_timestamp, last_reply)", default: "market_cap" },
                 includeNsfw: { type: "boolean", description: "Include NSFW coins (default: true)", default: true },
                 order: { type: "string", description: "The order to sort by (ASC, DESC)", default: "DESC"},
 
